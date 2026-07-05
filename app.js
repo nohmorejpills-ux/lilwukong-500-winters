@@ -226,6 +226,7 @@ const lyricsClock = document.querySelector("#lyricsClock");
 let currentTrackId = albumTracks[0].id;
 let currentVersionIndex = 0;
 let currentLyrics = [];
+let lyricElements = [];
 let currentLyricIndex = -1;
 let isSeeking = false;
 
@@ -250,7 +251,7 @@ function setStatus(message = "") {
 }
 
 function syncPlayButton(isPlaying) {
-  playPause.textContent = isPlaying ? "⏸" : "▶";
+  playPause.classList.toggle("is-playing", isPlaying);
   playPause.setAttribute("aria-label", isPlaying ? "暂停" : "播放");
   playPause.title = isPlaying ? "暂停" : "播放";
 }
@@ -283,6 +284,7 @@ function parseLrc(rawLrc = "") {
 
 function renderLyrics() {
   lyricsList.innerHTML = "";
+  lyricElements = [];
   currentLyricIndex = -1;
 
   if (currentLyrics.length === 0) {
@@ -305,6 +307,7 @@ function renderLyrics() {
     });
 
     lyricsList.append(line);
+    lyricElements.push(line);
   });
 
   lyricsList.scrollTop = 0;
@@ -323,15 +326,15 @@ function updateActiveLyric(time) {
 
   if (nextIndex === currentLyricIndex) return;
 
-  const previousActive = lyricsList.querySelector(".lyric-line.is-active");
-  if (previousActive) previousActive.classList.remove("is-active");
+  if (currentLyricIndex >= 0) {
+    lyricElements[currentLyricIndex]?.classList.remove("is-active");
+  }
 
   currentLyricIndex = nextIndex;
 
   if (currentLyricIndex < 0) return;
 
-  const activeLine = lyricsList.querySelector(`[data-index="${currentLyricIndex}"]`);
-  if (activeLine) activeLine.classList.add("is-active");
+  lyricElements[currentLyricIndex]?.classList.add("is-active");
 }
 
 function loadLyrics(track) {
@@ -542,13 +545,14 @@ seek.addEventListener("input", () => {
     const nextTime = (Number(seek.value) / 1000) * audio.duration;
     currentTime.textContent = formatTime(nextTime);
     lyricsClock.textContent = formatTime(nextTime);
-    updateActiveLyric(nextTime);
   }
 });
 
 seek.addEventListener("change", () => {
   if (Number.isFinite(audio.duration) && audio.duration > 0) {
-    audio.currentTime = (Number(seek.value) / 1000) * audio.duration;
+    const nextTime = (Number(seek.value) / 1000) * audio.duration;
+    audio.currentTime = nextTime;
+    updateActiveLyric(nextTime);
   }
   isSeeking = false;
 });
