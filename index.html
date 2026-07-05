@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>lilwukong - 五百个冬天</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="album-shell">
+      <section class="stage" aria-label="五百个冬天专辑播放器">
+        <div class="stage-copy">
+          <p class="artist">lilwukong</p>
+          <h1>五百个冬天</h1>
+          <p class="edition">实体专辑原始版本档案</p>
+        </div>
+
+        <section class="player-panel" aria-label="当前播放">
+          <div class="track-meta">
+            <p id="trackNumber" class="track-kicker">Track 01</p>
+            <h2 id="trackTitle">五百个冬天 01</h2>
+            <p id="trackVersion">原始版本</p>
+          </div>
+
+          <div id="versionSelector" class="version-selector" aria-label="版本选择"></div>
+
+          <audio id="audio" preload="metadata"></audio>
+
+          <div class="time-row" aria-label="播放进度">
+            <span id="currentTime">0:00</span>
+            <input id="seek" type="range" min="0" max="1000" value="0" aria-label="播放进度" />
+            <span id="duration">0:00</span>
+          </div>
+
+          <div class="controls" aria-label="播放控制">
+            <button id="previous" class="icon-button" type="button" aria-label="上一首" title="上一首">⏮</button>
+            <button id="playPause" class="play-button" type="button" aria-label="播放" title="播放">▶</button>
+            <button id="next" class="icon-button" type="button" aria-label="下一首" title="下一首">⏭</button>
+          </div>
+
+          <section class="lyrics-panel" aria-label="歌词">
+            <div class="lyrics-head">
+              <span>歌词</span>
+              <span id="lyricsClock">0:00</span>
+            </div>
+            <div id="lyricsList" class="lyrics-list"></div>
+          </section>
+
+          <div class="utility-row">
+            <label class="search-field">
+              <span>搜索</span>
+              <input id="search" type="search" placeholder="曲目名" autocomplete="off" />
+            </label>
+            <label class="switch">
+              <input id="loopAlbum" type="checkbox" />
+              <span>循环</span>
+            </label>
+          </div>
+
+          <p id="status" class="status" aria-live="polite"></p>
+        </section>
+      </section>
+
+      <section class="track-section" aria-label="曲目列表">
+        <div class="section-head">
+          <p>曲目档案</p>
+          <span id="trackCount">11 首 · 18 个版本</span>
+        </div>
+        <ol id="playlist" class="playlist"></ol>
+      </section>
+
+      <section class="track-section cut-section" aria-label="删减曲目">
+        <div class="section-head">
+          <p>删减曲目</p>
+          <span id="cutCount">1 首</span>
+        </div>
+        <ol id="cutPlaylist" class="playlist cut-playlist"></ol>
+      </section>
+    </main>
+
+    <script src="assets/lyrics-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
