@@ -216,7 +216,6 @@ const trackNumber = document.querySelector("#trackNumber");
 const trackTitle = document.querySelector("#trackTitle");
 const trackVersion = document.querySelector("#trackVersion");
 const status = document.querySelector("#status");
-const search = document.querySelector("#search");
 const loopAlbum = document.querySelector("#loopAlbum");
 const trackCount = document.querySelector("#trackCount");
 const cutCount = document.querySelector("#cutCount");
@@ -244,6 +243,11 @@ function formatTime(value) {
   const minutes = Math.floor(value / 60);
   const seconds = Math.floor(value % 60);
   return `${minutes}:${String(seconds).padStart(2, "0")}`;
+}
+
+function updateSeekProgress(value = Number(seek.value)) {
+  const progress = Math.min(Math.max(value, 0), 1000) / 10;
+  seek.style.setProperty("--progress", `${progress}%`);
 }
 
 function setStatus(message = "") {
@@ -343,18 +347,6 @@ function loadLyrics(track) {
   updateActiveLyric(0);
 }
 
-function trackMatches(track, query) {
-  const searchTarget = [
-    track.number,
-    track.title,
-    ...track.versions.map((version) => version.label),
-  ]
-    .join(" ")
-    .toLowerCase();
-
-  return searchTarget.includes(query);
-}
-
 function renderVersionButtons(track, container, shouldPlayOnClick) {
   container.innerHTML = "";
 
@@ -382,8 +374,7 @@ function renderVersionButtons(track, container, shouldPlayOnClick) {
 }
 
 function renderTrackList(tracks, container, countElement, emptyText) {
-  const query = search.value.trim().toLowerCase();
-  const visibleTracks = tracks.filter((track) => trackMatches(track, query));
+  const visibleTracks = tracks;
 
   container.innerHTML = "";
   countElement.textContent =
@@ -454,6 +445,7 @@ function updateTrackMeta() {
   currentTime.textContent = "0:00";
   lyricsClock.textContent = "0:00";
   seek.value = "0";
+  updateSeekProgress(0);
   setStatus("");
   loadLyrics(track);
   renderPlayerVersions(track);
@@ -505,11 +497,13 @@ next.addEventListener("click", () => stepTrack(1));
 
 audio.addEventListener("loadedmetadata", () => {
   duration.textContent = formatTime(audio.duration);
+  updateSeekProgress();
 });
 
 audio.addEventListener("timeupdate", () => {
   if (!isSeeking && Number.isFinite(audio.duration) && audio.duration > 0) {
     seek.value = String((audio.currentTime / audio.duration) * 1000);
+    updateSeekProgress();
   }
 
   const formattedTime = formatTime(audio.currentTime);
@@ -541,6 +535,7 @@ audio.addEventListener("error", () => {
 
 seek.addEventListener("input", () => {
   isSeeking = true;
+  updateSeekProgress();
   if (Number.isFinite(audio.duration) && audio.duration > 0) {
     const nextTime = (Number(seek.value) / 1000) * audio.duration;
     currentTime.textContent = formatTime(nextTime);
@@ -553,11 +548,10 @@ seek.addEventListener("change", () => {
     const nextTime = (Number(seek.value) / 1000) * audio.duration;
     audio.currentTime = nextTime;
     updateActiveLyric(nextTime);
+    updateSeekProgress();
   }
   isSeeking = false;
 });
-
-search.addEventListener("input", renderPlaylist);
 
 document.addEventListener("keydown", (event) => {
   if (event.target instanceof HTMLInputElement) return;
