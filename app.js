@@ -3,6 +3,7 @@ const albumTracks = [
     id: "track-01",
     number: "01",
     title: "三十三重天（33rd Heaven）",
+    titleEn: "33rd Heaven",
     lyricsKey: "01",
     versions: [
       {
@@ -21,6 +22,7 @@ const albumTracks = [
     id: "track-02",
     number: "02",
     title: "金丹紫露（Golden Pill Purple Dew）",
+    titleEn: "Golden Pill Purple Dew",
     lyricsKey: "02",
     versions: [
       {
@@ -34,6 +36,7 @@ const albumTracks = [
     id: "track-03",
     number: "03",
     title: "金身如此（Born Like This）",
+    titleEn: "Born Like This",
     lyricsKey: "03",
     versions: [
       {
@@ -47,6 +50,7 @@ const albumTracks = [
     id: "track-04",
     number: "04",
     title: "新王母娘娘蟠桃会",
+    titleEn: "New Queen Mother Pan Tao Banquet",
     lyricsKey: "04",
     versions: [
       {
@@ -65,6 +69,7 @@ const albumTracks = [
     id: "track-05",
     number: "05",
     title: "紧箍咒幻肢痛（Phantom Pain）",
+    titleEn: "Phantom Pain",
     lyricsKey: "05",
     versions: [
       {
@@ -88,6 +93,7 @@ const albumTracks = [
     id: "track-06",
     number: "06",
     title: "skit",
+    titleEn: "skit",
     lyricsKey: "06",
     versions: [
       {
@@ -101,6 +107,7 @@ const albumTracks = [
     id: "track-07",
     number: "07",
     title: "紧箍咒幻肢痛 pt.2（Phantom Pain Pt.2）",
+    titleEn: "Phantom Pain Pt.2",
     lyricsKey: "07",
     versions: [
       {
@@ -124,6 +131,7 @@ const albumTracks = [
     id: "track-08",
     number: "08",
     title: "500个冬天（500 Winters）",
+    titleEn: "500 Winters",
     lyricsKey: "08",
     versions: [
       {
@@ -142,6 +150,7 @@ const albumTracks = [
     id: "track-09",
     number: "09",
     title: "500个冬天 pt.2（500 Winters Pt.2）",
+    titleEn: "500 Winters Pt.2",
     lyricsKey: "09",
     versions: [
       {
@@ -155,6 +164,7 @@ const albumTracks = [
     id: "track-10",
     number: "10",
     title: "六耳（Six Ear）",
+    titleEn: "Six Ear",
     lyricsKey: "10",
     versions: [
       {
@@ -173,6 +183,7 @@ const albumTracks = [
     id: "track-11",
     number: "11",
     title: "回归（OUTRO）",
+    titleEn: "OUTRO",
     lyricsKey: "11",
     versions: [
       {
@@ -189,6 +200,7 @@ const cutTracks = [
     id: "cut-01",
     number: "D1",
     title: "石之心（删减曲目）",
+    titleEn: "Stone Heart (Deleted Track)",
     lyricsKey: "",
     versions: [
       {
@@ -225,8 +237,86 @@ const authPanel = document.querySelector("#authPanel");
 const authStatus = document.querySelector("#authStatus");
 const authCode = document.querySelector("#authCode");
 const authMeta = document.querySelector("#authMeta");
+const languageButtons = document.querySelectorAll("[data-lang-button]");
 
 const OFFICIAL_NFC_HOST = "nohmorejpills-ux.github.io";
+const LANGUAGE_STORAGE_KEY = "lilwukong-language";
+const SUPPORTED_LANGUAGES = ["zh", "en"];
+
+const translations = {
+  zh: {
+    pageTitle: "lilwukong - 五百个冬天",
+    stageAria: "五百个冬天专辑播放器",
+    albumTitle: "五百个冬天",
+    edition: "实体专辑原始版本档案",
+    authAria: "实体防伪验证",
+    authStatus: "官方实体 NFC 入口",
+    authMetaFallback: "请认准官方网址",
+    authMeta: "请认准 {host} · 本机第 {scans} 次进入 · 首次 {firstSeen}",
+    playerAria: "当前播放",
+    versionSelectorAria: "版本选择",
+    progressAria: "播放进度",
+    controlsAria: "播放控制",
+    previous: "上一首",
+    next: "下一首",
+    play: "播放",
+    pause: "暂停",
+    lyrics: "歌词",
+    loop: "循环",
+    trackListAria: "曲目列表",
+    trackArchive: "曲目档案",
+    cutTracks: "删减曲目",
+    noLyrics: "暂无歌词",
+    noAlbumTracks: "没有匹配的专辑曲目",
+    noCutTracks: "没有匹配的删减曲目",
+    playTrack: "播放 {title}",
+    cutTrackNumber: "Cut Track",
+    playError: "播放失败，请检查浏览器是否允许本地音频。",
+    missingAudio: "找不到 {src}",
+    justNow: "刚刚",
+  },
+  en: {
+    pageTitle: "lilwukong - 500 Winters",
+    stageAria: "500 Winters album player",
+    albumTitle: "500 Winters",
+    edition: "Physical album original-version archive",
+    authAria: "Physical album authentication",
+    authStatus: "Official physical NFC entry",
+    authMetaFallback: "Check the official URL",
+    authMeta: "Official domain: {host} · Opened {scans} times on this device · First {firstSeen}",
+    playerAria: "Now playing",
+    versionSelectorAria: "Version selection",
+    progressAria: "Playback progress",
+    controlsAria: "Playback controls",
+    previous: "Previous track",
+    next: "Next track",
+    play: "Play",
+    pause: "Pause",
+    lyrics: "Lyrics",
+    loop: "Loop",
+    trackListAria: "Track list",
+    trackArchive: "Track Archive",
+    cutTracks: "Deleted Tracks",
+    noLyrics: "No lyrics available",
+    noAlbumTracks: "No album tracks found",
+    noCutTracks: "No deleted tracks found",
+    playTrack: "Play {title}",
+    cutTrackNumber: "Cut Track",
+    playError: "Playback failed. Check whether the browser allows audio.",
+    missingAudio: "Missing {src}",
+    justNow: "Just now",
+  },
+};
+
+const versionLabelTranslations = {
+  最终版: "Final",
+  原版: "Original",
+  蟠桃园原版: "Pan Tao Garden Original",
+  "Tightening Spell 原版": "Tightening Spell Original",
+  "Tightening Spell 废版": "Tightening Spell Scrapped",
+  大陆初版: "Mainland First Edition",
+  删减曲目: "Deleted Track",
+};
 
 let currentTrackId = albumTracks[0].id;
 let currentVersionIndex = 0;
@@ -234,6 +324,103 @@ let currentLyrics = [];
 let lyricElements = [];
 let currentLyricIndex = -1;
 let isSeeking = false;
+let officialAuthRecord = null;
+let currentLang = getInitialLanguage();
+
+function getInitialLanguage() {
+  const urlLanguage = new URLSearchParams(window.location.search).get("lang");
+  if (SUPPORTED_LANGUAGES.includes(urlLanguage)) return urlLanguage;
+
+  try {
+    const saved = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    if (SUPPORTED_LANGUAGES.includes(saved)) return saved;
+  } catch {
+    // Ignore storage errors in private browsing modes.
+  }
+
+  const languages = navigator.languages?.length ? navigator.languages : [navigator.language];
+  return languages.some((language) => language?.toLowerCase().startsWith("zh")) ? "zh" : "en";
+}
+
+function t(key, values = {}) {
+  const template = translations[currentLang]?.[key] || translations.zh[key] || key;
+  return template.replace(/\{(\w+)\}/g, (_, name) => values[name] ?? "");
+}
+
+function translateVersionLabel(label) {
+  if (currentLang === "zh") return label;
+  return versionLabelTranslations[label] || label.replace(/ 原版/g, " Original").replace(/ 废版/g, " Scrapped");
+}
+
+function getTrackTitle(track) {
+  return currentLang === "en" && track.titleEn ? track.titleEn : track.title;
+}
+
+function formatAlbumCount(trackTotal, versionTotal) {
+  if (currentLang === "zh") {
+    return `${trackTotal} 首 · ${versionTotal} 个版本`;
+  }
+
+  const trackWord = trackTotal === 1 ? "track" : "tracks";
+  const versionWord = versionTotal === 1 ? "version" : "versions";
+  return `${trackTotal} ${trackWord} · ${versionTotal} ${versionWord}`;
+}
+
+function formatSimpleTrackCount(trackTotal) {
+  if (currentLang === "zh") {
+    return `${trackTotal} 首`;
+  }
+
+  return `${trackTotal} ${trackTotal === 1 ? "track" : "tracks"}`;
+}
+
+function applyStaticTranslations() {
+  document.documentElement.lang = currentLang === "zh" ? "zh-CN" : "en";
+  document.title = t("pageTitle");
+
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    element.textContent = t(element.dataset.i18n);
+  });
+
+  document.querySelectorAll("[data-i18n-aria]").forEach((element) => {
+    element.setAttribute("aria-label", t(element.dataset.i18nAria));
+  });
+
+  document.querySelectorAll("[data-i18n-title]").forEach((element) => {
+    element.title = t(element.dataset.i18nTitle);
+  });
+
+  languageButtons.forEach((button) => {
+    const isActive = button.dataset.langButton === currentLang;
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+}
+
+function refreshLocalizedInterface() {
+  applyStaticTranslations();
+  renderAuthPanel();
+  syncPlayButton(!audio.paused);
+  updateTrackMetaText();
+  renderPlayerVersions(currentTrack());
+  renderPlaylist();
+
+  if (currentLyrics.length === 0) {
+    renderLyrics();
+  }
+}
+
+function setLanguage(nextLang) {
+  if (!SUPPORTED_LANGUAGES.includes(nextLang) || nextLang === currentLang) return;
+  currentLang = nextLang;
+
+  try {
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, currentLang);
+  } catch {
+    // Ignore storage errors.
+  }
+
+  refreshLocalizedInterface();
+}
 
 function currentTrack() {
   return playbackOrder.find((track) => track.id === currentTrackId) || albumTracks[0];
@@ -253,9 +440,9 @@ function formatTime(value) {
 
 function formatVerificationDate(value) {
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "刚刚";
+  if (Number.isNaN(date.getTime())) return t("justNow");
 
-  return new Intl.DateTimeFormat("zh-CN", {
+  return new Intl.DateTimeFormat(currentLang === "zh" ? "zh-CN" : "en-US", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -291,11 +478,17 @@ function renderAuthPanel() {
 
   authPanel.hidden = false;
   authPanel.classList.remove("is-invalid");
-  authStatus.textContent = "官方实体 NFC 入口";
+  authStatus.textContent = t("authStatus");
   authCode.textContent = "OFFICIAL ALBUM PAGE";
 
-  const record = getLocalAuthRecord();
-  authMeta.textContent = `请认准 ${OFFICIAL_NFC_HOST} · 本机第 ${record.scans} 次进入 · 首次 ${formatVerificationDate(record.firstSeen)}`;
+  if (!officialAuthRecord) {
+    officialAuthRecord = getLocalAuthRecord();
+  }
+  authMeta.textContent = t("authMeta", {
+    host: OFFICIAL_NFC_HOST,
+    scans: officialAuthRecord.scans,
+    firstSeen: formatVerificationDate(officialAuthRecord.firstSeen),
+  });
 }
 
 function updateSeekProgress(value = Number(seek.value)) {
@@ -309,8 +502,9 @@ function setStatus(message = "") {
 
 function syncPlayButton(isPlaying) {
   playPause.classList.toggle("is-playing", isPlaying);
-  playPause.setAttribute("aria-label", isPlaying ? "暂停" : "播放");
-  playPause.title = isPlaying ? "暂停" : "播放";
+  const label = isPlaying ? t("pause") : t("play");
+  playPause.setAttribute("aria-label", label);
+  playPause.title = label;
 }
 
 function parseLrc(rawLrc = "") {
@@ -347,7 +541,7 @@ function renderLyrics() {
   if (currentLyrics.length === 0) {
     const placeholder = document.createElement("div");
     placeholder.className = "lyric-placeholder";
-    placeholder.textContent = "暂无歌词";
+    placeholder.textContent = t("noLyrics");
     lyricsList.append(placeholder);
     return;
   }
@@ -415,7 +609,7 @@ function renderVersionButtons(track, container, shouldPlayOnClick) {
     const isSelected = track.id === currentTrackId && versionIndex === currentVersionIndex;
     button.className = `version-chip${isSelected ? " is-selected" : ""}`;
     button.type = "button";
-    button.textContent = version.label;
+    button.textContent = translateVersionLabel(version.label);
     button.setAttribute("aria-pressed", String(isSelected));
     button.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -431,7 +625,9 @@ function renderTrackList(tracks, container, countElement, emptyText) {
 
   container.innerHTML = "";
   countElement.textContent =
-    container === playlist ? `${visibleTracks.length} 首 · ${tracks.reduce((sum, track) => sum + track.versions.length, 0)} 个版本` : `${visibleTracks.length} 首`;
+    container === playlist
+      ? formatAlbumCount(visibleTracks.length, tracks.reduce((sum, track) => sum + track.versions.length, 0))
+      : formatSimpleTrackCount(visibleTracks.length);
 
   if (visibleTracks.length === 0) {
     const empty = document.createElement("li");
@@ -450,15 +646,20 @@ function renderTrackList(tracks, container, countElement, emptyText) {
     button.className = "track-button";
     button.type = "button";
     button.dataset.number = track.number;
-    button.setAttribute("aria-label", `播放 ${track.title}`);
+    button.setAttribute("aria-label", t("playTrack", { title: getTrackTitle(track) }));
 
     const title = document.createElement("span");
     title.className = "track-title";
-    title.textContent = track.title;
+    title.textContent = getTrackTitle(track);
 
     const file = document.createElement("span");
     file.className = "track-file";
-    file.textContent = track.versions.length > 1 ? `${track.versions.length} 版本` : track.versions[0].label;
+    file.textContent =
+      track.versions.length > 1
+        ? currentLang === "zh"
+          ? `${track.versions.length} 版本`
+          : `${track.versions.length} ${track.versions.length === 1 ? "version" : "versions"}`
+        : translateVersionLabel(track.versions[0].label);
 
     button.append(title, file);
     button.addEventListener("click", () => {
@@ -479,20 +680,26 @@ function renderTrackList(tracks, container, countElement, emptyText) {
 }
 
 function renderPlaylist() {
-  renderTrackList(albumTracks, playlist, trackCount, "没有匹配的专辑曲目");
-  renderTrackList(cutTracks, cutPlaylist, cutCount, "没有匹配的删减曲目");
+  renderTrackList(albumTracks, playlist, trackCount, t("noAlbumTracks"));
+  renderTrackList(cutTracks, cutPlaylist, cutCount, t("noCutTracks"));
 }
 
 function renderPlayerVersions(track) {
   renderVersionButtons(track, versionSelector, true);
 }
 
+function updateTrackMetaText() {
+  const track = currentTrack();
+  const version = currentVersion();
+  trackNumber.textContent = track.number.startsWith("D") ? t("cutTrackNumber") : `Track ${track.number}`;
+  trackTitle.textContent = getTrackTitle(track);
+  trackVersion.textContent = translateVersionLabel(version.label);
+}
+
 function updateTrackMeta() {
   const track = currentTrack();
   const version = currentVersion();
-  trackNumber.textContent = track.number.startsWith("D") ? "Cut Track" : `Track ${track.number}`;
-  trackTitle.textContent = track.title;
-  trackVersion.textContent = version.label;
+  updateTrackMetaText();
   audio.src = version.src;
   duration.textContent = "0:00";
   currentTime.textContent = "0:00";
@@ -510,7 +717,7 @@ async function playCurrent() {
     await audio.play();
     syncPlayButton(true);
   } catch {
-    setStatus("播放失败，请检查浏览器是否允许本地音频。");
+    setStatus(t("playError"));
   }
 }
 
@@ -583,7 +790,7 @@ audio.addEventListener("ended", () => {
 });
 
 audio.addEventListener("error", () => {
-  setStatus(`找不到 ${currentVersion().src}`);
+  setStatus(t("missingAudio", { src: currentVersion().src }));
 });
 
 seek.addEventListener("input", () => {
@@ -606,6 +813,12 @@ seek.addEventListener("change", () => {
   isSeeking = false;
 });
 
+languageButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setLanguage(button.dataset.langButton);
+  });
+});
+
 document.addEventListener("keydown", (event) => {
   if (event.target instanceof HTMLInputElement) return;
 
@@ -623,5 +836,7 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-renderAuthPanel();
+applyStaticTranslations();
 updateTrackMeta();
+renderAuthPanel();
+syncPlayButton(false);

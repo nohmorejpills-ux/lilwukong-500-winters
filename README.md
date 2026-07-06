@@ -2,6 +2,15 @@
 
 这是一个静态专辑播放页，直接打开 `index.html` 就能预览。
 
+## 双语访问
+
+页面会根据浏览器语言自动显示中文或英文，也可以用右上角的 `中 / EN` 手动切换。需要指定语言时，可以在网址后加参数：
+
+```text
+https://nohmorejpills-ux.github.io/lilwukong-500-winters/?lang=zh
+https://nohmorejpills-ux.github.io/lilwukong-500-winters/?lang=en
+```
+
 ## 文件替换
 
 - 背景图放到 `assets/background.jpg`

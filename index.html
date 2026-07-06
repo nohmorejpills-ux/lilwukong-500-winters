@@ -11,44 +11,49 @@
   </head>
   <body>
     <main class="album-shell">
-      <section class="stage" aria-label="五百个冬天专辑播放器">
+      <nav class="language-switch" aria-label="Language">
+        <button class="language-button" type="button" data-lang-button="zh" aria-pressed="true">中</button>
+        <button class="language-button" type="button" data-lang-button="en" aria-pressed="false">EN</button>
+      </nav>
+
+      <section class="stage" aria-label="五百个冬天专辑播放器" data-i18n-aria="stageAria">
         <div class="stage-copy">
           <p class="artist">lilwukong</p>
-          <h1>五百个冬天</h1>
-          <p class="edition">实体专辑原始版本档案</p>
-          <aside id="authPanel" class="auth-card" aria-label="实体防伪验证" hidden>
-            <span id="authStatus">官方实体 NFC 入口</span>
+          <h1 data-i18n="albumTitle">五百个冬天</h1>
+          <p class="edition" data-i18n="edition">实体专辑原始版本档案</p>
+          <aside id="authPanel" class="auth-card" aria-label="实体防伪验证" data-i18n-aria="authAria" hidden>
+            <span id="authStatus" data-i18n="authStatus">官方实体 NFC 入口</span>
             <strong id="authCode">OFFICIAL ALBUM PAGE</strong>
-            <small id="authMeta">请认准官方网址</small>
+            <small id="authMeta" data-i18n="authMetaFallback">请认准官方网址</small>
           </aside>
         </div>
 
-        <section class="player-panel" aria-label="当前播放">
+        <section class="player-panel" aria-label="当前播放" data-i18n-aria="playerAria">
           <div class="track-meta">
             <p id="trackNumber" class="track-kicker">Track 01</p>
             <h2 id="trackTitle">五百个冬天 01</h2>
             <p id="trackVersion">原始版本</p>
           </div>
 
-          <div id="versionSelector" class="version-selector" aria-label="版本选择"></div>
+          <div id="versionSelector" class="version-selector" aria-label="版本选择" data-i18n-aria="versionSelectorAria"></div>
 
           <audio id="audio" preload="metadata"></audio>
 
-          <div class="time-row" aria-label="播放进度">
+          <div class="time-row" aria-label="播放进度" data-i18n-aria="progressAria">
             <span id="currentTime">0:00</span>
-            <input id="seek" type="range" min="0" max="1000" value="0" aria-label="播放进度" />
+            <input id="seek" type="range" min="0" max="1000" value="0" aria-label="播放进度" data-i18n-aria="progressAria" />
             <span id="duration">0:00</span>
           </div>
 
-          <div class="controls" aria-label="播放控制">
-            <button id="previous" class="icon-button previous-button" type="button" aria-label="上一首" title="上一首"></button>
+          <div class="controls" aria-label="播放控制" data-i18n-aria="controlsAria">
+            <button id="previous" class="icon-button previous-button" type="button" aria-label="上一首" title="上一首" data-i18n-aria="previous" data-i18n-title="previous"></button>
             <button id="playPause" class="play-button" type="button" aria-label="播放" title="播放"></button>
-            <button id="next" class="icon-button next-button" type="button" aria-label="下一首" title="下一首"></button>
+            <button id="next" class="icon-button next-button" type="button" aria-label="下一首" title="下一首" data-i18n-aria="next" data-i18n-title="next"></button>
           </div>
 
-          <section class="lyrics-panel" aria-label="歌词">
+          <section class="lyrics-panel" aria-label="歌词" data-i18n-aria="lyrics">
             <div class="lyrics-head">
-              <span>歌词</span>
+              <span data-i18n="lyrics">歌词</span>
               <span id="lyricsClock">0:00</span>
             </div>
             <div id="lyricsList" class="lyrics-list"></div>
@@ -57,7 +62,7 @@
           <div class="utility-row">
             <label class="switch">
               <input id="loopAlbum" type="checkbox" />
-              <span>循环</span>
+              <span data-i18n="loop">循环</span>
             </label>
           </div>
 
@@ -65,17 +70,17 @@
         </section>
       </section>
 
-      <section class="track-section" aria-label="曲目列表">
+      <section class="track-section" aria-label="曲目列表" data-i18n-aria="trackListAria">
         <div class="section-head">
-          <p>曲目档案</p>
+          <p data-i18n="trackArchive">曲目档案</p>
           <span id="trackCount">11 首 · 18 个版本</span>
         </div>
         <ol id="playlist" class="playlist"></ol>
       </section>
 
-      <section class="track-section cut-section" aria-label="删减曲目">
+      <section class="track-section cut-section" aria-label="删减曲目" data-i18n-aria="cutTracks">
         <div class="section-head">
-          <p>删减曲目</p>
+          <p data-i18n="cutTracks">删减曲目</p>
           <span id="cutCount">1 首</span>
         </div>
         <ol id="cutPlaylist" class="playlist cut-playlist"></ol>
