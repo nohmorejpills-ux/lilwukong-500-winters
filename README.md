@@ -20,3 +20,19 @@ assets/audio/20.mp3
 ```
 
 LRC 歌词文件仍保留在 `assets/lyrics/`，`assets/lyrics-data.js` 是从这些 LRC 生成出来的离线歌词数据。
+
+## 轻量 NFC 防伪
+
+所有 NFC 贴片可以统一写入同一个官方入口网址：
+
+```text
+https://nohmorejpills-ux.github.io/lilwukong-500-winters/?nfc=official
+```
+
+打开这个网址时，页面会显示“官方实体 NFC 入口”，并提醒用户认准官方域名：
+
+```text
+nohmorejpills-ux.github.io/lilwukong-500-winters
+```
+
+`nfc-url.txt` 里也保存了这条统一写入地址。这个方案适合批量快速写入；如果用户扫码进入的不是这个官方域名，就可以判断为异常入口。

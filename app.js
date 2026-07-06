@@ -221,6 +221,12 @@ const trackCount = document.querySelector("#trackCount");
 const cutCount = document.querySelector("#cutCount");
 const lyricsList = document.querySelector("#lyricsList");
 const lyricsClock = document.querySelector("#lyricsClock");
+const authPanel = document.querySelector("#authPanel");
+const authStatus = document.querySelector("#authStatus");
+const authCode = document.querySelector("#authCode");
+const authMeta = document.querySelector("#authMeta");
+
+const OFFICIAL_NFC_HOST = "nohmorejpills-ux.github.io";
 
 let currentTrackId = albumTracks[0].id;
 let currentVersionIndex = 0;
@@ -243,6 +249,53 @@ function formatTime(value) {
   const minutes = Math.floor(value / 60);
   const seconds = Math.floor(value % 60);
   return `${minutes}:${String(seconds).padStart(2, "0")}`;
+}
+
+function formatVerificationDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "刚刚";
+
+  return new Intl.DateTimeFormat("zh-CN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+}
+
+function isOfficialNfcEntry() {
+  const params = new URLSearchParams(window.location.search);
+  return (params.get("nfc") || "").trim().toLowerCase() === "official";
+}
+
+function getLocalAuthRecord() {
+  const storageKey = "lilwukong-official-nfc-entry";
+  const now = new Date().toISOString();
+
+  try {
+    const saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+    const record = {
+      firstSeen: saved?.firstSeen || now,
+      scans: Number(saved?.scans || 0) + 1,
+    };
+    localStorage.setItem(storageKey, JSON.stringify(record));
+    return record;
+  } catch {
+    return { firstSeen: now, scans: 1 };
+  }
+}
+
+function renderAuthPanel() {
+  if (!authPanel || !isOfficialNfcEntry()) return;
+
+  authPanel.hidden = false;
+  authPanel.classList.remove("is-invalid");
+  authStatus.textContent = "官方实体 NFC 入口";
+  authCode.textContent = "OFFICIAL ALBUM PAGE";
+
+  const record = getLocalAuthRecord();
+  authMeta.textContent = `请认准 ${OFFICIAL_NFC_HOST} · 本机第 ${record.scans} 次进入 · 首次 ${formatVerificationDate(record.firstSeen)}`;
 }
 
 function updateSeekProgress(value = Number(seek.value)) {
@@ -570,4 +623,5 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+renderAuthPanel();
 updateTrackMeta();
