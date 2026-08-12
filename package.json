@@ -1,0 +1,12 @@
+{
+  "name": "lilwukong-nfc",
+  "private": true,
+  "version": "1.0.0",
+  "description": "lilwukong《五百个冬天》实体专辑 NFC 电子专辑页",
+  "scripts": {
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "vite": "^5.4.11"
+  }
+}

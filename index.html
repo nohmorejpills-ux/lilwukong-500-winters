@@ -87,7 +87,28 @@
       </section>
     </main>
 
+    <div id="claimOverlay" class="claim-overlay" role="dialog" aria-modal="true" aria-label="NFC 专属编号领取" hidden>
+      <div id="claimCard" class="claim-card" data-state="verifying">
+        <p id="claimKicker" class="claim-kicker"></p>
+        <div class="claim-visual">
+          <span class="claim-ring" aria-hidden="true"></span>
+          <img id="claimSignature" alt="" hidden />
+        </div>
+        <h2 id="claimTitle" class="claim-title"></h2>
+        <p class="claim-number-row">
+          <strong id="claimNumber" class="claim-number"></strong>
+          <span id="claimTotal" class="claim-total"></span>
+        </p>
+        <p id="claimMeta" class="claim-meta"></p>
+        <p id="claimHint" class="claim-hint"></p>
+        <div class="claim-actions">
+          <button id="claimEnter" class="claim-button primary" type="button" hidden></button>
+        </div>
+      </div>
+    </div>
+
     <script src="assets/lyrics-data.js"></script>
     <script src="app.js"></script>
+    <script src="claim.js"></script>
   </body>
 </html>
